@@ -18,6 +18,8 @@ typedef struct game {
 
 void init_game(Game *g);
 
+void end_game(Game *g);
+
 void add_food(Game *g);
 
 int next_move(Game *g, int input_dir);

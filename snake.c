@@ -10,6 +10,9 @@ void init_game(struct game *g) {
 	g->snake_len = 2;
 	g->snake_dir = 1;
 
+	g->food_col = -1;
+	g->food_row = -1;
+
 	g->snake_tail = NEW_POINT;
 	g->snake_tail->row = g->board_width/2-1;
 	g->snake_tail->col = g->board_height/2-1;
@@ -31,14 +34,29 @@ void add_food(Game *g) {
 		row = rand()%g->board_height;
 		col = rand()%g->board_width;
 		for(Point_list *ptr = g->snake_tail; ptr; ptr = ptr->next)
-			if(ptr->row == row && ptr->col == col) goto B;
-		if(g->food_row == row && g->food_col == col) goto B;
+			if(ptr->row == row && ptr->col == col)
+				goto B;
+		if(g->food_row == row && g->food_col == col)
+			goto B;
+
 		break;
 B:
 		continue;
 	}
 	g->food_row = row;
 	g->food_col = col;
+}
+
+void end_game(Game *g) {
+	for(Point_list *ptr = g->snake_tail, *next_ptr; ptr; ptr = next_ptr) {
+		next_ptr = ptr->next;
+		free(ptr);
+	}
+	g->snake_head = NULL;
+	g->snake_tail = NULL;
+	g->snake_len = 0;
+	g->food_col = -1;
+	g->food_row = -1;
 }
 
 int next_move(Game *g, int input_dir) {
@@ -55,7 +73,8 @@ int next_move(Game *g, int input_dir) {
 	if(row < 0 || col < 0 || row >= g->board_height || col >= g->board_width) goto D;
 
 	for(Point_list *ptr = g->snake_tail; ptr != g->snake_head; ptr = ptr->next)
-		if(row == ptr->row && col == ptr->col) goto D;
+		if(row == ptr->row && col == ptr->col)
+			goto D;
 
 	if(row == g->food_row && col == g->food_col) {
 		++g->snake_len;
