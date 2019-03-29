@@ -40,7 +40,7 @@ int main()
 	init_pair(1, COLOR_YELLOW, COLOR_BLACK); /* snake */
 	init_pair(2, COLOR_RED, COLOR_BLACK); /* food */
 	init_pair(3, COLOR_CYAN, COLOR_BLUE); /* title */
-	
+
 	refresh();
 
 	/* set window size */
@@ -123,7 +123,7 @@ int main()
 				int buf_slen = g.snake_len;
 				int buf_frow = g.food_row;
 				int buf_fcol = g.food_col;
-				
+
 				if (key_input == 5)
 					key_input = 4;
 
